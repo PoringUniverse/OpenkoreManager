@@ -1,0 +1,29 @@
+{
+  "name": "openkoremanagerx",
+  "version": "1.0.0",
+  "description": "Openkore Manager",
+  "author": "Ren alcantara",
+  "main": "scripts/main.js",
+  "scripts": {
+    "postinstall": "build install-app-deps",
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "com.pu.openkoremanagerx",
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "simple-git": "^1.85.0"
+  },
+  "devDependencies": {
+    "electron": "^1.7.9",
+    "electron-builder": "^19.49.0"
+  }
+}
