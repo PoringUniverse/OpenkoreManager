@@ -9,15 +9,6 @@ const openkore = document.querySelector(".openkore-console");
 const btnconsoleSend = document.querySelector(".button-send");
 const btnStart = document.querySelector(".button-start");
 
-ipcRenderer.on('console:log', function(e,msg){
-    const line = document.createElement('li');
-    const consoleText = document.createTextNode(msg);
-    line.appendChild(consoleText);
-    openkore.appendChild(line);
-    openkore.scrollTop = openkore.scrollHeight;
-    Clearoldmsg();
-});
-
 ipcRenderer.on('console:title', function(e,msg){
     document.querySelector("#consoleTitle").innerHTML = msg;
 });
@@ -74,16 +65,26 @@ function SelectBot(e){
 };
 
 btnStart.addEventListener("click", function (e) {
-    
     const status = document.querySelector(".active");
     const info = document.createTextNode(" (Running)");
     status.appendChild(info);
-
     ipcRenderer.send('bot:start');
-    
 });
 
 
 document.querySelector(".bot-add").addEventListener("click", function (e) {
     ipcRenderer.send('bot:add');
+});
+
+ipcRenderer.on('console:log', function(e,msg){
+    const cmsg = msg.split("~");
+    const line = document.createElement('li');
+    const coloredText = document.createElement('font');
+    coloredText.style.color = cmsg[0] != '' ? cmsg[0] : 'white';
+    const consoleText = document.createTextNode(cmsg[1]);
+    coloredText.appendChild(consoleText);
+    line.appendChild(coloredText);
+    openkore.appendChild(line);
+    openkore.scrollTop = openkore.scrollHeight;
+    Clearoldmsg();
 });

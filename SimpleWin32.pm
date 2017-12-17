@@ -1,24 +1,19 @@
 #########################################################################
-#  Win32::GUI Interface for OpenKore
-#  by: amacc_boy (koreadvance@yahoo.com)
+#  SimpleWin32 Interface for OpenKore
+#  by: ren alcantara
 #
 #########################################################################
 
 package Interface::SimpleWin32;
 
-use strict;
-use warnings;
-no warnings 'redefine';
-use Time::HiRes qw(usleep);
-use IO::Socket;
-use bytes;
-no encoding 'utf8';
-
-use Modules 'register';
-use Globals qw(%consoleColors);
 use Interface;
-use base qw(Interface);
-use I18N qw(UTF8ToString);
+use base qw/Interface/;
+use Time::HiRes qw/time usleep/;
+use Settings qw(%sys);
+use Plugins;
+use Globals;
+use Settings;
+use Misc;
 
 our @input_que;
 our @input_list;
@@ -48,13 +43,17 @@ sub getInput {
 		$line =~ s/\n//;
 		$line = undef if ($line eq '');
 	}
+
 	$line = I18N::UTF8ToString($line) if (defined($line));
 	return $line;
 }
 
 sub writeOutput {
 	my ($self, $type, $message, $domain) = @_;
-	print STDOUT $message;
+	my ($color);
+	$color = $consoleColors{$type}{$domain} if (defined $type && defined $domain && defined $consoleColors{$type});
+	$color = $consoleColors{$type}{'default'} if (!defined $color && defined $type);
+	print STDOUT $color."~".$message;
 	STDOUT->flush;
 }
 

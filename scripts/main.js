@@ -90,17 +90,13 @@ function initGit(){
   if (!fs.existsSync( path.join(__dirname, '../openkore' ) )) {
     console.log('cloning openkore');
     git().silent(true).clone("https://github.com/OpenKore/openkore.git").then(() => {
-      if ( !fs.existsSync( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') )) {
-        fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
-      }  
+      fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
       console.log('finished cloning openkore');
     });
   }else{
     console.log('updating openkore');
     git( path.join(__dirname, '../openkore') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => {
-      if ( !fs.existsSync( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') )) {
-        fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
-      }
+      fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
       console.log('finished updating openkore');
     });
   }
