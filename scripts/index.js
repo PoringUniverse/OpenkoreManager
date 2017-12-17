@@ -79,11 +79,9 @@ document.querySelector(".bot-add").addEventListener("click", function (e) {
 ipcRenderer.on('console:log', function(e,msg){
     const cmsg = msg.split("~");
     const line = document.createElement('li');
-    const coloredText = document.createElement('font');
-    coloredText.style.color = cmsg[0] != '' ? cmsg[0] : 'white';
+    line.style.color = cmsg[0] != '' ? cmsg[0] : 'white';
     const consoleText = document.createTextNode(cmsg[1]);
-    coloredText.appendChild(consoleText);
-    line.appendChild(coloredText);
+    line.appendChild(consoleText);
     openkore.appendChild(line);
     openkore.scrollTop = openkore.scrollHeight;
     Clearoldmsg();
