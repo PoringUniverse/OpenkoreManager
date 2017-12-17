@@ -128,23 +128,21 @@ ipcMain.on('console:send', function(e, input){
 });
 
 //INIT BOTS
-function initBots(){
+ipcMain.on('bot:init', function(e) {
+  console.log("init Bots");
   botCount = 0 ;
   const dir = path.join(__dirname, '../bots');
   fs.readdir(dir, (err, files) => {
     files.forEach(element => {
-      mainWindow.webContents.send('Bot:add',element,botCount);
-      BotConfig[botCount] = element;
-      BotOutput[botCount] = new Array();
-      BotRunning[botCount] = false;
-      botCount++;
+      if( element != "donotdelete" ){
+        mainWindow.webContents.send('Bot:add',element,botCount);
+        BotConfig[botCount] = element;
+        BotOutput[botCount] = new Array();
+        BotRunning[botCount] = false;
+        botCount++;
+      }
     });
   });
-}
-
-ipcMain.on('bot:init', function(e) {
-  console.log("init Bots");
-  initBots();
 })
 
 ipcMain.on('bot:start', function(e) {
