@@ -12,10 +12,27 @@
   },
   "build": {
     "appId": "com.pu.openkoremanagerx",
+    "files": [
+      "!SimpleWin32.pm",
+      "!bots",
+      "!openkore",
+      "!iro-restart-repo"
+    ],
     "win": {
       "target": "NSIS",
       "icon": "build/icon.ico"
-    }
+    },
+    "extraResources": [
+      {
+        "from": "bots/",
+        "to": "./bots/"
+      },
+      {
+        "from": "SimpleWin32.pm",
+        "to": "."
+      }
+    ]
+    
   },
   "dependencies": {
     "bootstrap": "^3.3.7",

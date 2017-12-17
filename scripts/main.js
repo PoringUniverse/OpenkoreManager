@@ -2,9 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-const {app, BrowserWindow, Menu, ipcMain} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 // init win
 let mainWindow,addbotWindow;
+let Directory;
 
 app.on('ready', createWindow);
 function createWindow() {
@@ -88,23 +89,33 @@ function initGit(){
   //download / update from openkore from github
   if (!fs.existsSync( path.join(__dirname, '../openkore' ) )) {
     console.log('cloning openkore');
-    git().silent(true).clone("https://github.com/OpenKore/openkore.git").then(() => console.log('finished cloning openkore'));
+    git().silent(true).clone("https://github.com/OpenKore/openkore.git").then(() => {
+      if ( !fs.existsSync( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') )) {
+        fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
+      }  
+      console.log('finished cloning openkore');
+    });
   }else{
     console.log('updating openkore');
-    git( path.join(__dirname, '../openkore') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => console.log('finished updating openkore'));
+    git( path.join(__dirname, '../openkore') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => {
+      if ( !fs.existsSync( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') )) {
+        fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
+      }
+      console.log('finished updating openkore');
+    });
   }
-
   //download / update from legit repo
   if (!fs.existsSync( path.join(__dirname, '../iro-restart-repo') )) {
     console.log('cloning iro-restart-repo');
-    git().silent(true).clone("https://github.com/PoringUniverse/iro-restart-repo.git").then(() => console.log('finished cloning iro-restart-repo'));
+    git().silent(true).clone("https://github.com/PoringUniverse/iro-restart-repo.git").then(() => {
+      console.log('finished cloning iro-restart-repo')
+    });
+    
   }else{
     console.log('updating iro-restart-repo');
-    git( path.join(__dirname, '../iro-restart-repo') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => console.log('finished updating iro-restart-repo'));
-  }
-
-  if ( !fs.existsSync( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') )) {
-    fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
+    git( path.join(__dirname, '../iro-restart-repo') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => {
+      console.log('finished updating iro-restart-repo')
+    });
   }
 }
 
@@ -134,8 +145,8 @@ ipcMain.on('console:send', function(e, input){
 //INIT BOTS
 ipcMain.on('bot:init', function(e) {
   console.log("init Bots");
+  const dir = path.join( app.getAppPath() , 'bots');
   botCount = 0 ;
-  const dir = path.join(__dirname, '../bots');
   fs.readdir(dir, (err, files) => {
     files.forEach(element => {
       if( element != "donotdelete" ){
