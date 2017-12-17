@@ -1,6 +1,9 @@
 # OpenkoreManager
 based on electron
 
+Dependencies
+- Requires [git](http://git-scm.com/downloads) to be installed and that it can be called using the command git.
+
 Features:
 - Pull Update from official opekore
 - Include legit repo
