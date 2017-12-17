@@ -8,12 +8,12 @@ Features:
 - Pull Update from official opekore
 - Include legit repo
 - Start Bot
+- Create/Add new bot profile
 
 ToDo:
 - Start/Stop Bot
 - Optimize Code
 - Clone Official Openkore Git
-- Create/Add new bot profile
 - Config.txt editor (save/edit)
 - Macro Selector (enable disable macros/eventmacro)
 - Rename Bot

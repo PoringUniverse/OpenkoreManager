@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const url = require('url');
 
@@ -160,6 +160,7 @@ ipcMain.on('bot:init', function(e) {
   });
 })
 
+
 ipcMain.on('bot:start', function(e) {
   var myID = selectedID;
   if(!BotRunning[selectedID]){
@@ -192,3 +193,17 @@ ipcMain.on('bot:select', function(e, index) {
     ConsoleOut(element,selectedID);
   });
 })
+
+
+
+ipcMain.on('bot:addnew', function(e, name) {
+  const openkoreControl_dir = path.join( app.getAppPath() , 'openkore/control/');
+  const botControlDist = path.join( app.getAppPath() , 'bots/' + name + '/');
+  fs.copy(openkoreControl_dir,botControlDist);
+  botCount++;
+  mainWindow.webContents.send('Bot:add',name,botCount);
+  BotConfig[botCount] = name;
+  BotOutput[botCount] = new Array();
+  BotRunning[botCount] = false;
+  addbotWindow.close();
+});
