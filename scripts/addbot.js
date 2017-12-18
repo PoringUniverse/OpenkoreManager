@@ -17,5 +17,10 @@ btnCancel.addEventListener("click", function (e) {
 
 btnAdd.addEventListener("click", function (e) {
     const botname = document.querySelector("#bot-name").value;
-    ipcRenderer.send('bot:addnew', botname);
+    if( botname == '' ){
+        document.querySelector("#bot-name").classList.add("is-invalid");
+        document.querySelector("#bot-name").focus();
+    }else{
+        ipcRenderer.send('bot:addnew', botname);
+    }
 });
