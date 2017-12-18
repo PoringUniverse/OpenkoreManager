@@ -8,12 +8,16 @@ body {
   background-color: #f5f5f5;
 }
 
+.kore-add-minus {
+	margin-bottom: 10px;
+}
+
 .kore-body {
-  
+  padding: 0px;
 }
 
 .kore-controls {
-  margin-top: 20px;
+	padding: 1.25rem;
 }
 
 .openkore-console {
