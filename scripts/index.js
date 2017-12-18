@@ -49,7 +49,8 @@ ipcRenderer.on('Bot:add', function(e,botName,botId){
     
     if(botId == 0 ){
         bot.classList.add("active");
-        document.querySelector(".botName").innerHTML = botName;
+        document.querySelector("#consoleTitle").innerHTML = "console: " + botName;
+        
     }
     bot.id = botId;
     bot.innerHTML = botName;
@@ -59,7 +60,7 @@ ipcRenderer.on('Bot:add', function(e,botName,botId){
 
 function SelectBot(e){
     document.querySelector(".active").classList.remove("active");
-    document.querySelector(".botName").innerHTML = this.innerHTML;
+    document.querySelector("#consoleTitle").innerHTML = "console: " + this.innerHTML;
     this.classList.add("active");
     ipcRenderer.send('bot:select', this.id);
 };
