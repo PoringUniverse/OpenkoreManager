@@ -4,38 +4,42 @@
     <meta charset="utf-8">
     <title>Openkore Manager</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://bootswatch.com/4/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
     <link rel="stylesheet" href="../styles/main.css">
-    
   </head>
   <body>
       <div class="container-fluid">
-          <div class="row">
-            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-dark sidebar">
-              <button type="button" class="btn btn-primary btn-lg btn-block bot-add" style="margin-bottom:15px;"> Add Bot </button>
-              <div class="list-group bot-list">
-                
-              </div>
-            </nav>
-            <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-              <h1 class="botName">name</h1>
-              <button type="button" class="btn btn-primary btn-lg btn-block button-start" style="margin-bottom:15px;"> Start Bot </button>
-              <div class="card text-white bg-secondary mb-3" style="max-width: 600px;">
-                <div class="card-header" id="consoleTitle">Console</div>
-                <div class="card-body">
-                  <p class="card-text">
-                    <ul class="openkore-console">
-
-                    </ul>
-                    <div class="input-append" rel="tooltip">
-                        <input class="span9" id="input_command" type="text">
-                        <input type="button" class="button-send" value="Send"/>
+        <div class="row">
+            <div class="left-panel col-sm-3">
+              <button type="button" class="btn btn-default btn-sm btn-block bot-add"><i class="fa fa-plus" aria-hidden="true"></i> Add Bot</button>
+              <br>
+              <div class="list-group bot-list"></div>
+            </div>
+            <div class="col-sm-9">
+              <div class="right-panel card">
+                <div class="card-header" id="consoleTitle">Console: <span class="botName">name</span></div>
+                <div class="kore-body card-body">
+                  <ul class="openkore-console"></ul>
+                  <section class="kore-controls">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <button type="button" class="btn btn-default btn-sm button-start"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
+                          <button type="button" class="btn btn-default btn-sm"><i class="fa fa-stop" aria-hidden="true"></i> Stop</button>
+                          <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh" aria-hidden="true"></i> Relog</button>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="input-group">
+                              <input type="text" class="form-control form-control-sm" id="input_command" placeholder="Commands..." aria-label="Search for...">
+                              <span class="input-group-btn">
+                                <input type="button" class="btn btn-sm button-send" value="Send"/>
+                              </span>
+                          </div>
+                      </div>
                     </div>
-                  </p>
+                  </section>
                 </div>
               </div>
-            </main>
+            </div>
           </div>
         </div>
   </body>

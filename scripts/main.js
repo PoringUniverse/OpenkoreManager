@@ -10,7 +10,7 @@ let Directory;
 app.on('ready', createWindow);
 function createWindow() {
   //Create Browser Windows
-  mainWindow = new BrowserWindow({width:800, height:600, icon: path.join(__dirname, '../img/icon.png') });
+  mainWindow = new BrowserWindow({width:1024, height:600, icon: path.join(__dirname, '../img/icon.png') });
 
   // Load Index.html
   mainWindow.loadURL(url.format({
@@ -33,15 +33,7 @@ const mainMenuTemplate = [
     label:'File',
     submenu:[
       {
-        label: 'shit'
-      },
-      {
-        label: 'fck',
-        click(){
-        }
-      },
-      {
-        label:'quit',
+        label:'Exit',
         accelerator: "CommandOrControl+Q",
         click(){
           app.quit();
