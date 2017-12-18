@@ -49,7 +49,10 @@ ipcMain.on('bot:add', function(e) {
     addbotWindow.close();
   }
   const modalPath = path.join(__dirname, '../pages/addbot.html');
-  addbotWindow = new BrowserWindow({ frame: false, width:320, height:230 });
+  addbotWindow = new BrowserWindow({ frame: false, width:320, height:230, parent: mainWindow, modal:true, show:false });
+  addbotWindow.once("ready-to-show", () => {
+    addbotWindow.show();
+  });
   addbotWindow.on('close', function () { addbotWindow = null });
   addbotWindow.loadURL(modalPath);
   addbotWindow.show();
