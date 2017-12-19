@@ -56,7 +56,7 @@ ipcMain.on('bot:add', function(e) {
                                      width:350, height:180, 
                                      icon: path.join(__dirname, '../img/icon.png'), 
                                      parent: mainWindow, 
-                                     modal: true, 
+                                     modal: false, 
                                      show: false, 
                                      movable: true,
                                      maximizable: false,
