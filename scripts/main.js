@@ -165,7 +165,6 @@ ipcMain.on('bot:init', function(e) {
 ipcMain.on('bot:start', function(e) {
   var BotID = selectedID;
   if(!botRunning[selectedID]){
-    
     bots[selectedID] = spawn('start.exe', ["--interface=SimpleWin32", "--control=../bots/" + botConfig[selectedID] ] , { cwd: app.getAppPath() + '\\openkore\\' } );
     bots[selectedID].stdout.on('data', (data) => {
       botOutput[BotID].push(data.toString());
@@ -177,16 +176,20 @@ ipcMain.on('bot:start', function(e) {
       consoleWindowTitle(data.toString(),BotID);
     });
     botRunning[BotID] = true;
-
+    
+    mainWindow.webContents.send('console:setStartButton','stop','stop');
   }else{
     bots[BotID].kill();
     botRunning[BotID] = false;
+    botOutput[BotID] = new Array();
+    mainWindow.webContents.send('console:setStartButton','start', 'play');
   }
   
 })
 
 ipcMain.on('bot:select', function(e, index) {
   selectedID = index;
+  mainWindow.webContents.send('console:setStartButton',botRunning[selectedID] ? 'Stop' : 'Start', botRunning[selectedID] ? 'stop' : 'play');
   while(botOutput[selectedID].length > 200){
     botOutput[selectedID].shift();
   }

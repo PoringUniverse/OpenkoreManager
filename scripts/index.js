@@ -47,14 +47,13 @@ ipcRenderer.on('Bot:add', function(e,botName,botId){
     const bot = document.createElement('a');
     bot.classList.add("list-group-item");
     bot.classList.add("list-group-item-action");
-    
     if(botId == 0 ){
         bot.classList.add("active");
         document.querySelector("#consoleTitle").innerHTML = "Console: " + botName;
         
     }
     bot.id = botId;
-    bot.innerHTML = botName;
+    bot.innerHTML = botName + ` <i class="fa fa-circle bot-indicator" aria-hidden="true" style="color:green;display:none"></i>`;
     bot.addEventListener("click",selectBot);
     botList.appendChild(bot);
 });
@@ -69,9 +68,15 @@ function selectBot(e){
 
 btnStart.addEventListener("click", function (e) {
     const status = document.querySelector(".active");
-    const info = document.createTextNode(" (Running)");
-    status.appendChild(info);
+    const d = status.querySelector('.bot-indicator').style.display;
+    status.querySelector('.bot-indicator').style.display = (d == 'none'? 'inline':'none');
     ipcRenderer.send('bot:start');
+});
+
+ipcRenderer.on('console:setStartButton', function(e,msg,icon){
+    if( icon == 'play' )
+        openkore.innerHTML = "";
+    btnStart.innerHTML = `<i class="fa fa-${icon}" aria-hidden="true"></i> ${msg}`;
 });
 
 
