@@ -16,7 +16,7 @@ ipcRenderer.on('console:title', function(e,msg){
 
 function clearOldMsg(){
     var logCount = openkore.childElementCount;
-    while(logCount > 50){
+    while(logCount > 20){
         openkore.removeChild(openkore.firstChild);
         logCount = openkore.childElementCount;
     }
@@ -63,6 +63,7 @@ function selectBot(e){
     document.querySelector(".active").classList.remove("active");
     document.querySelector("#consoleTitle").innerHTML = "Console: " + this.innerHTML;
     this.classList.add("active");
+    openkore.innerHTML = "";
     ipcRenderer.send('bot:select', this.id);
 };
 

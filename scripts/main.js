@@ -163,31 +163,31 @@ ipcMain.on('bot:init', function(e) {
 
 
 ipcMain.on('bot:start', function(e) {
-  var myID = selectedID;
+  var BotID = selectedID;
   if(!botRunning[selectedID]){
     
     bots[selectedID] = spawn('start.exe', ["--interface=SimpleWin32", "--control=../bots/" + botConfig[selectedID] ] , { cwd: app.getAppPath() + '\\openkore\\' } );
     bots[selectedID].stdout.on('data', (data) => {
-      botOutput[myID].push(data.toString());
-      consoleWindowTitle(data.toString(),myID);
+      botOutput[BotID].push(data.toString());
+      consoleWindowTitle(data.toString(),BotID);
     });
 
-    bots[myID].stderr.on('data', (data) => {
-      botOutput[myID].push(data.toString());
-      consoleWindowTitle(data.toString(),myID);
+    bots[BotID].stderr.on('data', (data) => {
+      botOutput[BotID].push(data.toString());
+      consoleWindowTitle(data.toString(),BotID);
     });
-    botRunning[myID] = true;
+    botRunning[BotID] = true;
 
   }else{
-    bots[myID].kill();
-    botRunning[myID] = false;
+    bots[BotID].kill();
+    botRunning[BotID] = false;
   }
   
 })
 
 ipcMain.on('bot:select', function(e, index) {
   selectedID = index;
-  while(botOutput[selectedID].length > 50){
+  while(botOutput[selectedID].length > 200){
     botOutput[selectedID].shift();
   }
   botOutput[selectedID].forEach(element => {
