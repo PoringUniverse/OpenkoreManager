@@ -14,7 +14,7 @@ function createWindow() {
 
   // Load Index.html
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../pages/index.html'),
+    pathname: path.join(__dirname, '../app/mainWindow.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -48,8 +48,18 @@ ipcMain.on('bot:add', function(e) {
   if(addbotWindow != null){
     addbotWindow.close();
   }
-  const modalPath = path.join(__dirname, '../pages/addbot.html');
-  addbotWindow = new BrowserWindow({ frame: false, width:320, height:230, parent: mainWindow, modal:true, show:false });
+  const modalPath = path.join(__dirname, '../app/addWindow.html');
+  addbotWindow = new BrowserWindow({ frame: true, 
+                                     width:350, height:180, 
+                                     icon: path.join(__dirname, '../img/icon.png'), 
+                                     parent: mainWindow, 
+                                     modal: true, 
+                                     show: false, 
+                                     movable: false,
+                                     maximizable: false,
+                                     minimizable: false
+                                  });
+  addbotWindow.setMenu(null);
   addbotWindow.once("ready-to-show", () => {
     addbotWindow.show();
   });
@@ -57,8 +67,6 @@ ipcMain.on('bot:add', function(e) {
   addbotWindow.loadURL(modalPath);
   addbotWindow.show();
 })
-
-
 
 if(process.env.NODE_ENV !== 'production'){
   mainMenuTemplate.push({

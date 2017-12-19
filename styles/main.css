@@ -1,3 +1,5 @@
+/* addWindow.html */
+
 .left-panel, 
 .right-panel {
   padding-top: 20px;
@@ -35,3 +37,12 @@ body {
   font-size: 13px;
 	background: black;
 }
+
+/* addWindow.html */
+.add-window div h3 {
+	margin-top: 10px;
+}
+.add-window-buttons {
+	margin-top: 10px;
+}
+

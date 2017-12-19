@@ -1,9 +1,10 @@
-'use strict';
+"use strict";
 const electron = require('electron');
 const {ipcRenderer} = electron;
 window.$ = window.jQuery = require('jquery');
 window.Bootstrap = require('bootstrap');
 ipcRenderer.send('bot:init');
+
 //console
 const openkore = document.querySelector(".openkore-console");
 const btnconsoleSend = document.querySelector(".button-send");
@@ -13,7 +14,7 @@ ipcRenderer.on('console:title', function(e,msg){
     document.querySelector("#consoleTitle").innerHTML = msg;
 });
 
-function Clearoldmsg(){
+function clearOldMsg(){
     var logCount = openkore.childElementCount;
     while(logCount > 50){
         openkore.removeChild(openkore.firstChild);
@@ -85,5 +86,5 @@ ipcRenderer.on('console:log', function(e,msg){
     line.appendChild(consoleText);
     openkore.appendChild(line);
     openkore.scrollTop = openkore.scrollHeight;
-    Clearoldmsg();
+    clearOldMsg();
 });
