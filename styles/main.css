@@ -7,6 +7,35 @@ body {
   background-color: #f5f5f5;
 }
 
+.wrapper {
+	padding: 10px;
+	display: grid;
+	grid-template-columns: 1fr 2fr 1fr;
+	grid-template-areas: "header main main"
+									"sidebar main main";
+}
+
+.sidebar {
+	grid-area: sidebar;
+	overflow-y: auto;
+	height: 85vh;
+}
+
+.header{
+	grid-area: header;
+}
+
+.kore {
+	display: grid;
+	grid-area: main;
+	grid-template-rows: 0.3fr 3fr 0.2fr;
+	grid-template-areas: "title"
+									"console"
+									"controls";
+	height: 85vh;
+	margin-left: 1em;
+}
+
 .kore-plus-minus {
 	margin-bottom: 10px;
 }
@@ -16,6 +45,10 @@ body {
 }
 
 .kore-controls {
+	grid-area: controls;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 4fr 1fr;
+	grid-gap: 2px;
 	padding: 1.25rem;
 }
 
@@ -23,15 +56,17 @@ body {
 	padding: 0.50rem 0.50rem;
 }
 
+.consoleTitle {
+	grid-area: title;
+}
+
 .openkore-console {
-	width: 100%;
-	height: 350px;
+	grid-area: console;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 	white-space: pre-wrap;
-	border: 0;
 	margin: 0;
   padding: 0.5em;
-  font-size: 13px;
+  font-size: 12px;
 	background: black;
 }
