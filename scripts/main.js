@@ -4,17 +4,20 @@ const url = require('url');
 
 const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 // init win
-let mainWindow,addbotWindow;
-let Directory;
+let mainWindow, addbotWindow;
+let directory;
 
 app.on('ready', createWindow);
 function createWindow() {
   //Create Browser Windows
-  mainWindow = new BrowserWindow({width:1024, height:600, icon: path.join(__dirname, '../img/icon.png') });
+  mainWindow = new BrowserWindow({ width:1024, height:470, 
+                                   icon: path.join(__dirname, '../img/icon.png'),
+                                   maximizable: false
+                                });
 
   // Load Index.html
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../pages/index.html'),
+    pathname: path.join(__dirname, '../app/mainWindow.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -24,7 +27,7 @@ function createWindow() {
   mainWindow.on('closed', () => {
     app.quit();
   });
-
+  
   initGit();
 }
 
@@ -48,8 +51,18 @@ ipcMain.on('bot:add', function(e) {
   if(addbotWindow != null){
     addbotWindow.close();
   }
-  const modalPath = path.join(__dirname, '../pages/addbot.html');
-  addbotWindow = new BrowserWindow({ frame: false, width:320, height:230, parent: mainWindow, modal:true, show:false });
+  const modalPath = path.join(__dirname, '../app/addWindow.html');
+  addbotWindow = new BrowserWindow({ frame: true, 
+                                     width:350, height:180, 
+                                     icon: path.join(__dirname, '../img/icon.png'), 
+                                     parent: mainWindow, 
+                                     modal: true, 
+                                     show: false, 
+                                     movable: true,
+                                     maximizable: false,
+                                     minimizable: false
+                                  });
+  addbotWindow.setMenu(null);
   addbotWindow.once("ready-to-show", () => {
     addbotWindow.show();
   });
@@ -57,8 +70,6 @@ ipcMain.on('bot:add', function(e) {
   addbotWindow.loadURL(modalPath);
   addbotWindow.show();
 })
-
-
 
 if(process.env.NODE_ENV !== 'production'){
   mainMenuTemplate.push({
@@ -83,43 +94,42 @@ function initGit(){
   const git = require('simple-git');
   //download / update from openkore from github
   if (!fs.existsSync( path.join(__dirname, '../openkore' ) )) {
-    console.log('cloning openkore');
+    console.log('== Cloning Openkore ===');
     git().silent(true).clone("https://github.com/OpenKore/openkore.git").then(() => {
       fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
-      console.log('finished cloning openkore');
+      console.log('=== Finished Cloning Openkore ===');
     });
   }else{
     console.log('updating openkore');
     git( path.join(__dirname, '../openkore') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => {
       fs.createReadStream( path.join(__dirname, '../SimpleWin32.pm') ).pipe( fs.createWriteStream( path.join(__dirname, '../openkore/src/interface/SimpleWin32.pm') ) );
-      console.log('finished updating openkore');
+      console.log('=== Finished Updating Openkore ===');
     });
   }
   //download / update from legit repo
   if (!fs.existsSync( path.join(__dirname, '../iro-restart-repo') )) {
-    console.log('cloning iro-restart-repo');
+    console.log('=== Cloning iro-restart-repo ===');
     git().silent(true).clone("https://github.com/PoringUniverse/iro-restart-repo.git").then(() => {
-      console.log('finished cloning iro-restart-repo')
+      console.log('== Finished Cloning iro-restart-repo ===')
     });
     
   }else{
-    console.log('updating iro-restart-repo');
+    console.log('=== Updating iro-restart-repo ===');
     git( path.join(__dirname, '../iro-restart-repo') ).pull().tags((err, tags) => console.log("Latest available tag: %s", tags.latest)).then(() => {
-      console.log('finished updating iro-restart-repo')
+      console.log('=== Finished Updating iro-restart-repo ===')
     });
   }
 }
 
-
 const { spawn } = require('child_process');
 var selectedID = 0;
 var botCount = 0 ;
-var Bots = new Array();
-var BotRunning = new Array();
-var BotConfig = new Array();
-var BotOutput = new Array();
+var bots = new Array();
+var botRunning = new Array();
+var botConfig = new Array();
+var botOutput = new Array();
 
-function ConsoleOut(msg , id){
+function consoleWindowTitle(msg , id){
   if( id == selectedID ){
     if( msg.search("TITLE") > -1 ){
       mainWindow.webContents.send('console:title',msg.replace('{TITLE}',''));
@@ -130,7 +140,7 @@ function ConsoleOut(msg , id){
 }
 
 ipcMain.on('console:send', function(e, input){
-  Bots[selectedID].stdin.write(input  + "\n");
+  bots[selectedID].stdin.write(input  + "\n");
 });
 
 //INIT BOTS
@@ -142,9 +152,9 @@ ipcMain.on('bot:init', function(e) {
     files.forEach(element => {
       if( element != "donotdelete" ){
         mainWindow.webContents.send('Bot:add',element,botCount);
-        BotConfig[botCount] = element;
-        BotOutput[botCount] = new Array();
-        BotRunning[botCount] = false;
+        botConfig[botCount] = element;
+        botOutput[botCount] = new Array();
+        botRunning[botCount] = false;
         botCount++;
       }
     });
@@ -154,34 +164,34 @@ ipcMain.on('bot:init', function(e) {
 
 ipcMain.on('bot:start', function(e) {
   var myID = selectedID;
-  if(!BotRunning[selectedID]){
+  if(!botRunning[selectedID]){
     
-    Bots[selectedID] = spawn('start.exe', ["--interface=SimpleWin32", "--control=../bots/" + BotConfig[selectedID] ] , { cwd: app.getAppPath() + '\\openkore\\' } );
-    Bots[selectedID].stdout.on('data', (data) => {
-      BotOutput[myID].push(data.toString());
-      ConsoleOut(data.toString(),myID);
+    bots[selectedID] = spawn('start.exe', ["--interface=SimpleWin32", "--control=../bots/" + botConfig[selectedID] ] , { cwd: app.getAppPath() + '\\openkore\\' } );
+    bots[selectedID].stdout.on('data', (data) => {
+      botOutput[myID].push(data.toString());
+      consoleWindowTitle(data.toString(),myID);
     });
 
-    Bots[myID].stderr.on('data', (data) => {
-      BotOutput[myID].push(data.toString());
-      ConsoleOut(data.toString(),myID);
+    bots[myID].stderr.on('data', (data) => {
+      botOutput[myID].push(data.toString());
+      consoleWindowTitle(data.toString(),myID);
     });
-    BotRunning[myID] = true;
+    botRunning[myID] = true;
 
   }else{
-    Bots[myID].kill();
-    BotRunning[myID] = false;
+    bots[myID].kill();
+    botRunning[myID] = false;
   }
   
 })
 
 ipcMain.on('bot:select', function(e, index) {
   selectedID = index;
-  while(BotOutput[selectedID].length > 50){
-    BotOutput[selectedID].shift();
+  while(botOutput[selectedID].length > 50){
+    botOutput[selectedID].shift();
   }
-  BotOutput[selectedID].forEach(element => {
-    ConsoleOut(element,selectedID);
+  botOutput[selectedID].forEach(element => {
+    consoleWindowTitle(element,selectedID);
   });
 })
 
@@ -193,8 +203,8 @@ ipcMain.on('bot:addnew', function(e, name) {
   fs.copy(openkoreControl_dir,botControlDist);
   botCount++;
   mainWindow.webContents.send('Bot:add',name,botCount);
-  BotConfig[botCount] = name;
-  BotOutput[botCount] = new Array();
-  BotRunning[botCount] = false;
+  botConfig[botCount] = name;
+  botOutput[botCount] = new Array();
+  botRunning[botCount] = false;
   addbotWindow.close();
 });

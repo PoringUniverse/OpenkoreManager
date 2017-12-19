@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const electron = require('electron');
 const remote = require('electron').remote;
@@ -8,7 +8,7 @@ window.Bootstrap = require('bootstrap');
 
 
 const btnCancel = document.querySelector(".cancel-button");
-const btnAdd = document.querySelector(".addbot-button");
+const btnAdd = document.querySelector(".add-bot-button");
 
 btnCancel.addEventListener("click", function (e) {
     var window = remote.getCurrentWindow();
@@ -16,10 +16,10 @@ btnCancel.addEventListener("click", function (e) {
 });
 
 btnAdd.addEventListener("click", function (e) {
-    const botname = document.querySelector("#bot-name").value;
+    const botname = document.querySelector("#botName").value;
     if( botname == '' ){
-        document.querySelector("#bot-name").classList.add("is-invalid");
-        document.querySelector("#bot-name").focus();
+        document.querySelector("#botName").classList.add("is-invalid");
+        document.querySelector("#botName").focus();
     }else{
         ipcRenderer.send('bot:addnew', botname);
     }

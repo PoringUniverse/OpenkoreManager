@@ -1,19 +1,20 @@
-'use strict';
+"use strict";
 const electron = require('electron');
 const {ipcRenderer} = electron;
 window.$ = window.jQuery = require('jquery');
 window.Bootstrap = require('bootstrap');
 ipcRenderer.send('bot:init');
+
 //console
 const openkore = document.querySelector(".openkore-console");
-const btnconsoleSend = document.querySelector(".button-send");
+const btnSendCommand = document.querySelector(".button-send");
 const btnStart = document.querySelector(".button-start");
 
 ipcRenderer.on('console:title', function(e,msg){
     document.querySelector("#consoleTitle").innerHTML = msg;
 });
 
-function Clearoldmsg(){
+function clearOldMsg(){
     var logCount = openkore.childElementCount;
     while(logCount > 50){
         openkore.removeChild(openkore.firstChild);
@@ -21,21 +22,21 @@ function Clearoldmsg(){
     }
 }
 
-btnconsoleSend.addEventListener('click', submitInput);
+btnSendCommand.addEventListener('click', submitInput);
 
-document.querySelector("#input_command").addEventListener('keypress', function (e) {
+document.querySelector("#inputCommand").addEventListener('keypress', function (e) {
     var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
-        const consoleInput = document.querySelector("#input_command").value;
+        const consoleInput = document.querySelector("#inputCommand").value;
         ipcRenderer.send('console:send', consoleInput);
-        document.querySelector("#input_command").value = "";
+        document.querySelector("#inputCommand").value = "";
     }
 });
 
 function submitInput(e){
-    const consoleInput = document.querySelector("#input_command").value;
+    const consoleInput = document.querySelector("#inputCommand").value;
     ipcRenderer.send('console:send', consoleInput);
-    document.querySelector("#input_command").value = "";
+    document.querySelector("#inputCommand").value = "";
 }
 //end console
 
@@ -49,18 +50,18 @@ ipcRenderer.on('Bot:add', function(e,botName,botId){
     
     if(botId == 0 ){
         bot.classList.add("active");
-        document.querySelector("#consoleTitle").innerHTML = "console: " + botName;
+        document.querySelector("#consoleTitle").innerHTML = "Console: " + botName;
         
     }
     bot.id = botId;
     bot.innerHTML = botName;
-    bot.addEventListener("click",SelectBot);
+    bot.addEventListener("click",selectBot);
     botList.appendChild(bot);
 });
 
-function SelectBot(e){
+function selectBot(e){
     document.querySelector(".active").classList.remove("active");
-    document.querySelector("#consoleTitle").innerHTML = "console: " + this.innerHTML;
+    document.querySelector("#consoleTitle").innerHTML = "Console: " + this.innerHTML;
     this.classList.add("active");
     ipcRenderer.send('bot:select', this.id);
 };
@@ -85,5 +86,5 @@ ipcRenderer.on('console:log', function(e,msg){
     line.appendChild(consoleText);
     openkore.appendChild(line);
     openkore.scrollTop = openkore.scrollHeight;
-    Clearoldmsg();
+    clearOldMsg();
 });

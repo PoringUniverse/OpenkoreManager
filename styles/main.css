@@ -1,10 +1,16 @@
+/* addWindow.html */
+
 .left-panel, 
 .right-panel {
   padding-top: 20px;
 }
 
+.left-panel {
+	border-right: 3px dotted rgb(90, 90, 90);
+}
+
 body {
-  background-color: #f5f5f5;
+  background-color: #0a0a0a;
 }
 
 .kore-plus-minus {
@@ -21,17 +27,41 @@ body {
 
 .list-group-item {
 	padding: 0.50rem 0.50rem;
+	background-color: #343a40 !important;
+	border-color: #343a40 !important;
+	font-weight: bold;
+	color: #757575 !important;
+}
+
+.list-group-item.active {
+	z-index: 2;
+	color: #fff !important;
+	background-color: rgb(95, 95, 95) !important;
+	border-color: rgb(95, 95, 95) !important;
+}
+
+.bg-dark {
+	border-color: #343a40 !important;
 }
 
 .openkore-console {
 	width: 100%;
-	height: 350px;
+	height: 250px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	white-space: pre-wrap;
 	border: 0;
 	margin: 0;
-  padding: 0.5em;
+  padding: 1.5rem;
   font-size: 13px;
 	background: black;
 }
+
+/* addWindow.html */
+.add-window div h3 {
+	margin-top: 10px;
+}
+.add-window-buttons {
+	margin-top: 10px;
+}
+
