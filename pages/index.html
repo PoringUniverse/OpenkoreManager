@@ -8,24 +8,42 @@
     <link rel="stylesheet" href="../styles/main.css">
   </head>
   <body>
-      <div class="wrapper">
-        <div class="header kore-plus-minus text-center">
-            <button type="button" class="btn btn-default btn-sm bot-add"><i class="fa fa-plus" aria-hidden="true"></i> Add Bot</button>
-            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-minus" aria-hidden="true"></i> Delete Bot</button>
-        </div>
-        <div class="sidebar list-group bot-list"></div>
-        <div class="kore card">
-            <div id="consoleTitle" class="consoleTitle">Console: <span class="botName">name</span></div>
-            <ul class="openkore-console"></ul>
-            <div class="kore-controls">
-              <button type="button" class="btn btn-default btn-sm button-start"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fa fa-stop" aria-hidden="true"></i> Stop</button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh" aria-hidden="true"></i> Relog</button>
-              <input type="text" class="form-control form-control-sm" id="input_command" placeholder="Commands...">
-              <input type="button" class="btn btn-sm button-send" value="Send"/>
+      <div class="container-fluid">
+        <div class="row">
+            <div class="left-panel col-md-3">
+              <div class="kore-plus-minus text-center">
+                  <button type="button" class="btn btn-default btn-sm bot-add"><i class="fa fa-plus" aria-hidden="true"></i> Add Bot</button>
+                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-minus" aria-hidden="true"></i> Delete Bot</button>
+              </div>
+              <div class="list-group bot-list"></div>
             </div>
+            <div class="right-panel col-md-9">
+              <div class="card">
+                <div class="card-header" id="consoleTitle">Console: <span class="botName">name</span></div>
+                <div class="kore-body card-body">
+                  <ul class="openkore-console"></ul>
+                  <section class="kore-controls">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <button type="button" class="btn btn-default btn-sm button-start"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
+                          <button type="button" class="btn btn-default btn-sm"><i class="fa fa-stop" aria-hidden="true"></i> Stop</button>
+                          <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh" aria-hidden="true"></i> Relog</button>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="input-group">
+                              <input type="text" class="form-control form-control-sm" id="input_command" placeholder="Commands..." aria-label="Search for...">
+                              <span class="input-group-btn">
+                                <input type="button" class="btn btn-sm button-send" value="Send"/>
+                              </span>
+                          </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
   </body>
   <script>
     require('../scripts/index.js');

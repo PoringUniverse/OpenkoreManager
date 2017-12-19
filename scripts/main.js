@@ -177,13 +177,15 @@ ipcMain.on('bot:start', function(e) {
 
 ipcMain.on('bot:select', function(e, index) {
   selectedID = index;
-  while(BotOutput[selectedID].length > 20){
+  while(BotOutput[selectedID].length > 50){
     BotOutput[selectedID].shift();
   }
   BotOutput[selectedID].forEach(element => {
     ConsoleOut(element,selectedID);
   });
 })
+
+
 
 ipcMain.on('bot:addnew', function(e, name) {
   const openkoreControl_dir = path.join( app.getAppPath() , 'openkore/control/');
