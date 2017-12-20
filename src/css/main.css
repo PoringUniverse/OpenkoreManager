@@ -1,0 +1,24 @@
+/* .html */
+
+
+.kore-controls {
+	padding: 1.25rem;
+}
+
+.openkore-console {
+	width: 100%;
+	height: 200px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	white-space: pre-wrap;
+	border: 0;
+	margin: 0;
+  padding: 1rem;
+  font-size: 13px;
+	background: black;
+}
+
+.box-title {
+	font-size: 13px !important;
+}
+

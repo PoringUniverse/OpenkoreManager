@@ -1,7 +1,7 @@
 "use strict";
 const electron = require('electron');
 const {ipcRenderer} = electron;
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = require('jquery'), require("jquery-ui");
 window.Bootstrap = require('bootstrap');
 ipcRenderer.send('bot:init');
 
@@ -43,24 +43,23 @@ function submitInput(e){
 //Bot List
 const botList = document.querySelector(".bot-list");
 
-ipcRenderer.on('Bot:add', function(e,botName,botId){
-    const bot = document.createElement('a');
-    bot.classList.add("list-group-item");
-    bot.classList.add("list-group-item-action");
+ipcRenderer.on('Bot:add', function(e, botName, botId) {
+    const bot = document.createElement('li');
+    // bot.classList.add("list-group-item");
+    // bot.classList.add("list-group-item-action");
     if(botId == 0 ){
         bot.classList.add("active");
         document.querySelector("#consoleTitle").innerHTML = "Console: " + botName;
-        
     }
     bot.id = botId;
-    bot.innerHTML = botName + ` <i class="fa fa-circle bot-indicator" aria-hidden="true" style="color:green;display:none"></i>`;
-    bot.addEventListener("click",selectBot);
+    bot.innerHTML = '<a href="#">' + botName + ' <i class="fa fa-circle bot-indicator" aria-hidden="true" style="color:green;display:none"></i></a>';
+    bot.addEventListener("click", selectBot);
     botList.appendChild(bot);
 });
 
 function selectBot(e){
     document.querySelector(".active").classList.remove("active");
-    document.querySelector("#consoleTitle").innerHTML = "Console: " + this.innerHTML;
+    document.querySelector("#consoleTitle").innerHTML = "Console: " + this.textContent;
     this.classList.add("active");
     openkore.innerHTML = "";
     ipcRenderer.send('bot:select', this.id);
@@ -80,9 +79,9 @@ ipcRenderer.on('console:setStartButton', function(e,msg,icon){
 });
 
 
-document.querySelector(".bot-add").addEventListener("click", function (e) {
-    ipcRenderer.send('bot:add');
-});
+// document.querySelector(".bot-add").addEventListener("click", function (e) {
+//     ipcRenderer.send('bot:add');
+// });
 
 ipcRenderer.on('console:log', function(e,msg){
     const cmsg = msg.split("~");

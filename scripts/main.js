@@ -10,9 +10,8 @@ let directory;
 app.on('ready', createWindow);
 function createWindow() {
   //Create Browser Windows
-  mainWindow = new BrowserWindow({ width:1024, height:470, 
-                                   icon: path.join(__dirname, '../img/icon.png'),
-                                   maximizable: false
+  mainWindow = new BrowserWindow({ width:800, height:470, 
+                                   icon: path.join(__dirname, '../src/img/openkore.ico')
                                 });
 
   // Load Index.html
