@@ -52,7 +52,7 @@ ipcRenderer.on('Bot:add', function(e, botName, botId) {
         document.querySelector("#consoleTitle").innerHTML = "Console: " + botName;
     }
     bot.id = botId;
-    bot.innerHTML = '<a href="#">' + botName + ' <i class="fa fa-circle bot-indicator" aria-hidden="true" style="color:green;display:none"></i></a>';
+    bot.innerHTML = '<a href="#"><i class="fa fa-circle bot-indicator" aria-hidden="true" style="color:red"></i><span>' + botName + '</span></a>';
     bot.addEventListener("click", selectBot);
     botList.appendChild(bot);
 });
@@ -67,8 +67,8 @@ function selectBot(e){
 
 btnStart.addEventListener("click", function (e) {
     const status = document.querySelector(".active");
-    const d = status.querySelector('.bot-indicator').style.display;
-    status.querySelector('.bot-indicator').style.display = (d == 'none'? 'inline':'none');
+    const d = status.querySelector('.bot-indicator').style.color;
+    status.querySelector('.bot-indicator').style.color = (d == 'red'? 'green':'red');
     ipcRenderer.send('bot:start');
 });
 

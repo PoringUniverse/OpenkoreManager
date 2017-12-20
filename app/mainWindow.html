@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Openkore Manager - (Alpha no jutsu version)</title>
+    <title>Openkore Manager</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../src/css/bootstrap.min.css">
     <link rel="stylesheet" href="../src/css/AdminLTE.min.css">
@@ -42,7 +42,6 @@
                 </ul>
               </section>
             </aside>
-          
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
               <!-- Main content -->
@@ -52,12 +51,6 @@
                         <div class="box">
                             <div class="box-header with-border">
                               <p class="box-title" id="consoleTitle">Console: <span class="botName"></span></p>
-                              <div class="box-tools pull-right">
-                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                  </button>
-                                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                                  </button>
-                                </div>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
@@ -98,7 +91,7 @@
                 <div class="tab-pane" id="control-sidebar-home-tab">
                   <h3 class="control-sidebar-heading">Wiki</h3>
                   <ul class="control-sidebar-menu">
-                    
+
                   </ul>
                 </div>
                 <!-- /.tab-pane -->
@@ -109,7 +102,6 @@
                 <div class="tab-pane" id="control-sidebar-settings-tab">
                   <form method="post">
                     <h3 class="control-sidebar-heading">General Settings</h3>
-          
                     <!-- /.form-group -->
                   </form>
                 </div>
@@ -130,34 +122,9 @@
           </div>
           <div class="list-group bot-list"></div>
         </div>
-        <div class="right-panel col-md-9">
-          <div class="card text-white bg-dark mb-3">
-            <div class="card-header text-muted" id="consoleTitle">Console: <span class="botName">name</span></div>
-            <div class="kore-body card-body">
-              <ul class="openkore-console"></ul>
-              <section class="kore-controls">
-                <div class="row">
-                  <div class="col-md-6">
-                      <button type="button" class="btn btn-default btn-sm button-start"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
-                      <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh" aria-hidden="true"></i> Relog</button>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="input-group">
-                          <input type="text" class="form-control form-control-sm" id="inputCommand" placeholder="Commands..." aria-label="Search for...">
-                          <span class="input-group-btn">
-                            <input type="button" class="btn btn-default btn-sm button-send" value="Send"/>
-                          </span>
-                      </div>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
     </div> -->
   <script>
-      require('../scripts/index.js');
+    require('../scripts/index.js');
   </script>
   <script src="../src/js/adminlte.min.js"></script>
   </body>
