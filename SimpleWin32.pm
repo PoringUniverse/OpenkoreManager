@@ -6,6 +6,7 @@
 
 package Interface::SimpleWin32;
 
+use strict;
 use Interface;
 use base qw/Interface/;
 use Time::HiRes qw/time usleep/;
@@ -15,9 +16,7 @@ use Globals;
 use Settings;
 use Misc;
 
-our @input_que;
-our @input_list;
-
+our $last_domain = "";
 
 sub new {
 	my $class = shift;
@@ -32,16 +31,24 @@ sub DESTROY {
 
 sub getInput {
 	my ($self, $timeout) = @_;
-	my $line;
-	my $bits;
+	my $line ;
+	my $fh;
 
-	if ($timeout < 0) {
+	if($timeout < 0 ){
+		$line = <STDIN>;
+	}else{ 
 		$line = <STDIN>;
 	}
+	
 
 	if (defined $line) {
-		$line =~ s/\n//;
+		$line =~ s/[\r\n]+$//;
 		$line = undef if ($line eq '');
+	}
+
+	if( defined $line ){
+		print STDOUT "green~console~".$line;
+		STDOUT->flush;
 	}
 
 	$line = I18N::UTF8ToString($line) if (defined($line));
@@ -53,7 +60,8 @@ sub writeOutput {
 	my ($color);
 	$color = $consoleColors{$type}{$domain} if (defined $type && defined $domain && defined $consoleColors{$type});
 	$color = $consoleColors{$type}{'default'} if (!defined $color && defined $type);
-	print STDOUT $color."~".$message;
+	print STDOUT $color."~". $domain. "~" .$message;
+	$last_domain = $domain;
 	STDOUT->flush;
 }
 

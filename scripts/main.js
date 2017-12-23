@@ -128,18 +128,10 @@ var botRunning = new Array();
 var botConfig = new Array();
 var botOutput = new Array();
 
-function consoleWindowTitle(msg , id){
-  if( id == selectedID ){
-    if( msg.search("TITLE") > -1 ){
-      mainWindow.webContents.send('console:title',msg.replace('{TITLE}',''));
-    }else{
-      mainWindow.webContents.send('console:log',msg);
-    }
-  }
-}
+
 
 ipcMain.on('console:send', function(e, input){
-  bots[selectedID].stdin.write(input  + "\n");
+  bots[selectedID].stdin.write(input  + "\n");  
 });
 
 //INIT BOTS
@@ -167,15 +159,21 @@ ipcMain.on('bot:start', function(e) {
     bots[selectedID] = spawn('start.exe', ["--interface=SimpleWin32", "--control=../bots/" + botConfig[selectedID] ] , { cwd: app.getAppPath() + '\\openkore\\' } );
     bots[selectedID].stdout.on('data', (data) => {
       botOutput[BotID].push(data.toString());
+      while(botOutput[BotID].length > 50){
+        botOutput[BotID].shift();
+      }
+      botOutputHolder[BotID] = data.toString();
       consoleWindowTitle(data.toString(),BotID);
     });
-
-    bots[BotID].stderr.on('data', (data) => {
+      bots[BotID].stderr.on('data', (data) => {
       botOutput[BotID].push(data.toString());
+      while(botOutput[BotID].length > 50){
+        botOutput[BotID].shift();
+      }
+      botOutputHolder[BotID] = data.toString();
       consoleWindowTitle(data.toString(),BotID);
     });
     botRunning[BotID] = true;
-    
     mainWindow.webContents.send('console:setStartButton','stop','stop');
   }else{
     bots[BotID].kill();
@@ -189,9 +187,6 @@ ipcMain.on('bot:start', function(e) {
 ipcMain.on('bot:select', function(e, index) {
   selectedID = index;
   mainWindow.webContents.send('console:setStartButton',botRunning[selectedID] ? 'Stop' : 'Start', botRunning[selectedID] ? 'stop' : 'play');
-  while(botOutput[selectedID].length > 200){
-    botOutput[selectedID].shift();
-  }
   botOutput[selectedID].forEach(element => {
     consoleWindowTitle(element,selectedID);
   });
@@ -210,3 +205,29 @@ ipcMain.on('bot:addnew', function(e, name) {
   botRunning[botCount] = false;
   addbotWindow.close();
 });
+
+function consoleWindowTitle(msg , id){
+  if( id == selectedID ){
+    if( msg.search("TITLE") > -1 ){
+      mainWindow.webContents.send('console:title',msg.replace('{TITLE}',''));
+    }else{
+      mainWindow.webContents.send('console:log',msg);
+    }
+  }
+}
+
+var botOutputHolder = new Array();
+function consolebuffer() {
+  for (let index = 0; index < botCount; index++) {
+    try {
+      console.log(botOutputHolder[index]);
+      if( botRunning[index] && botOutput[index][botOutput[index].length-1] == botOutputHolder[index] ){
+        if( !botOutput[index][botOutput[index].length-1].includes("~input~") ){
+          bots[index].stdin.write("\n");
+        }
+      }
+    }catch(err) {}
+  }
+  setTimeout(consolebuffer, 2 * 1000);
+}
+consolebuffer();
