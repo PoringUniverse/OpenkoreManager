@@ -208,7 +208,7 @@ ipcMain.on('bot:addnew', function(e, name) {
 
 function consoleWindowTitle(msg , id){
   if( id == selectedID ){
-    if( msg.search("TITLE") > -1 ){
+    if( msg.includes("{TITLE}") ){
       mainWindow.webContents.send('console:title',msg.replace('{TITLE}',''));
     }else{
       mainWindow.webContents.send('console:log',msg);
@@ -220,8 +220,8 @@ var botOutputHolder = new Array();
 function consolebuffer() {
   for (let index = 0; index < botCount; index++) {
     try {
-      console.log(botOutputHolder[index]);
       if( botRunning[index] && botOutput[index][botOutput[index].length-1] == botOutputHolder[index] ){
+        
         if( !botOutput[index][botOutput[index].length-1].includes("~input~") ){
           bots[index].stdin.write("\n");
         }

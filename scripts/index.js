@@ -87,7 +87,7 @@ ipcRenderer.on('console:log', function(e,msg){
     const cmsg = msg.split("~");
     const line = document.createElement('li');
     line.style.color = cmsg[0] != '' ? cmsg[0] : 'white';
-    const consoleText = document.createTextNode( cmsg[1] + " : " + cmsg[2]);
+    const consoleText = document.createTextNode( cmsg[2]);
     line.appendChild(consoleText);
     openkore.appendChild(line);
     openkore.scrollTop = openkore.scrollHeight;
