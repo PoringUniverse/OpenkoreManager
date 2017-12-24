@@ -131,7 +131,9 @@ var botOutput = new Array();
 
 
 ipcMain.on('console:send', function(e, input){
-  bots[selectedID].stdin.write(input  + "\n");  
+  if( botRunning[selectedID] ){
+    bots[selectedID].stdin.write(input  + "\n");  
+  }
 });
 
 //INIT BOTS
