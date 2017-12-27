@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../src/css/main.css">
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
-      <div class="wrapper">
+      <div class="wrapper" id="app">
           <header class="main-header">
               <!-- Logo -->
               <a href="#" class="logo">
@@ -39,7 +39,15 @@
             <aside class="main-sidebar">
               <section class="sidebar">
                 <ul class="sidebar-menu bot-list" data-widget="tree">
+                    <li v-for="profile in profiles" :class="{ active: profile.ID == Selected.ID }" v-on:click="SelectProfile(profile)">
+                        <a href="#" >
+                          <i class="fa fa-circle bot-indicator" aria-hidden="true"
+                          v-bind:style="{ color: profile.IsRunning ? 'green':'red' }" style="color:red"></i>
+                          <span>{{ profile.Config }}</span>
+                        </a>
+                    </li>
                 </ul>
+                
               </section>
             </aside>
             <!-- Content Wrapper. Contains page content -->
@@ -50,15 +58,19 @@
                     <div class="col-md-6">
                         <div class="box">
                             <div class="box-header with-border">
-                              <p class="box-title" id="consoleTitle">Console: <span class="botName"></span></p>
+                              <p class="box-title" id="consoleTitle" v-if="Selected">Console: {{ Selected.Title }} </span></p>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
-                              <ul class="openkore-console"></ul>
+                              <ul class="openkore-console" v-if="Selected">
+                                  <li v-for="log in Selected.Output" v-bind:style="{ color: log.color ? log.color : 'white' }">{{log.data}}</li>
+                              </ul>
                               <section class="kore-controls">
                                 <div class="row">
                                   <div class="col-sm-4">
-                                      <button type="button" class="btn btn-default btn-sm button-start"><i class="fa fa-play" aria-hidden="true"></i> Start</button>
+                                      <button type="button" class="btn btn-default btn-sm" v-if="Selected" v-on:click="StartPRofile">
+                                        <i class="fa" v-bind:class="[Selected.IsRunning ? 'fa-stop' : 'fa-play']" aria-hidden="true"></i>
+                                        {{ Selected.IsRunning ? 'Stop': 'Start' }}</button>
                                       <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh" aria-hidden="true"></i> Relog</button>
                                   </div>
                                   <div class="col-sm-8">
@@ -123,6 +135,8 @@
           <div class="list-group bot-list"></div>
         </div>
     </div> -->
+    
+  <script src="../src/js/vue.js"></script>
   <script>
     require('../scripts/index.js');
   </script>
